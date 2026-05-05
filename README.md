@@ -1,4 +1,8 @@
 <p align="center">
+  <a href="README.zh-CN.md">中文文档</a>
+</p>
+
+<p align="center">
   <h1 align="center">FreeNews API</h1>
   <p align="center">
     Global news aggregation API with AI-powered analysis.<br/>
