@@ -48,7 +48,7 @@ Register at [freenews.site/register](https://freenews.site/register) and create 
 ### 2. Make your first request
 
 ```bash
-curl "https://api.freenews.site/api/v1/news?pageSize=5" \
+curl "https://freenews.site/api/v1/news?pageSize=5" \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
@@ -121,19 +121,20 @@ All responses follow a unified JSON structure:
 {
   "code": 0,
   "message": "success",
-  "data": { ... }
+  "data": { ... },
+  "success": true
 }
 ```
 
-- `code` = `0` means success.
-- Non-zero `code` indicates an error (see [Error Codes](#error-codes)).
+- `code` = `0` means success, `success` = `true`.
+- Non-zero `code` indicates an error (`success` = `false`). See [Error Codes](#error-codes).
 - HTTP status is typically `200` even for business errors; always check the `code` field.
 
 ---
 
 ## API Reference
 
-**Base URL:** `https://api.freenews.site`
+**Base URL:** `https://freenews.site`
 
 ### Metadata (No API Key Required)
 
@@ -239,7 +240,7 @@ Retrieve a paginated list of news articles with optional filters.
 **Example:**
 
 ```bash
-curl "https://api.freenews.site/api/v1/news?source=bbc&language=en&pageSize=10" \
+curl "https://freenews.site/api/v1/news?source=bbc&language=en&pageSize=10" \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
@@ -293,7 +294,7 @@ Get full article details including AI analysis.
 **Example:**
 
 ```bash
-curl "https://api.freenews.site/api/v1/news/12345" \
+curl "https://freenews.site/api/v1/news/12345" \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
@@ -371,7 +372,7 @@ Full-text search powered by Elasticsearch. Supports advanced query syntax.
 **Example:**
 
 ```bash
-curl "https://api.freenews.site/api/v1/search?keyword=artificial+intelligence&language=en&pageSize=5" \
+curl "https://freenews.site/api/v1/search?keyword=artificial+intelligence&language=en&pageSize=5" \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
@@ -458,7 +459,7 @@ Returns search suggestions for autocomplete. **Does not consume quota.**
 **Example:**
 
 ```bash
-curl "https://api.freenews.site/api/v1/search/suggest?q=artif&limit=5" \
+curl "https://freenews.site/api/v1/search/suggest?q=artif&limit=5" \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
@@ -489,7 +490,7 @@ Check your current API key's quota and usage. **Does not consume quota.**
 **Example:**
 
 ```bash
-curl "https://api.freenews.site/api/v1/account/quota" \
+curl "https://freenews.site/api/v1/account/quota" \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
@@ -507,12 +508,12 @@ curl "https://api.freenews.site/api/v1/account/quota" \
     "planName": "free",
     "planDisplayName": "Free",
     "callsToday": 42,
-    "dailyLimit": 100,
-    "dailyRemaining": 58,
+    "dailyLimit": 1000,
+    "dailyRemaining": 958,
     "callsMonth": 856,
-    "monthlyLimit": 1000,
-    "monthlyRemaining": 144,
-    "effectiveRemaining": 58,
+    "monthlyLimit": 30000,
+    "monthlyRemaining": 29144,
+    "effectiveRemaining": 958,
     "effectiveLimitScope": "daily",
     "lastUsedAt": "2026-05-05T10:30:00",
     "expiresAt": null,
@@ -566,7 +567,8 @@ The `keyword` parameter supports powerful query expressions:
 {
   "code": 3001,
   "message": "需要 API Key",
-  "data": null
+  "data": null,
+  "success": false
 }
 ```
 
@@ -578,8 +580,8 @@ Each API key belongs to a plan that determines its quotas:
 
 | | Free | Pro | Enterprise |
 |---|---|---|---|
-| Daily requests | 100 | 5,000 | Unlimited |
-| Monthly requests | 1,000 | 100,000 | Unlimited |
+| Daily requests | 1,000 | 10,000 | Unlimited |
+| Monthly requests | 30,000 | 300,000 | Unlimited |
 | Rate limit | 1 req/s | 10 req/s | 50 req/s |
 | Full article content | No (500 chars) | Yes | Yes |
 | Support | Community | Email | Priority |
@@ -598,7 +600,7 @@ Use `GET /api/v1/account/quota` to monitor your usage in real time.
 import requests
 
 API_KEY = "YOUR_API_KEY"
-BASE_URL = "https://api.freenews.site"
+BASE_URL = "https://freenews.site"
 
 # Get latest news
 response = requests.get(
@@ -637,7 +639,7 @@ for item in results["items"]:
 
 ```javascript
 const API_KEY = "YOUR_API_KEY";
-const BASE_URL = "https://api.freenews.site";
+const BASE_URL = "https://freenews.site";
 
 // Get latest news
 const response = await fetch(
@@ -674,18 +676,18 @@ console.log(`Found ${results.data.total} articles`);
 
 ```bash
 # Get news sources (no API key needed)
-curl "https://api.freenews.site/api/v1/meta/sources"
+curl "https://freenews.site/api/v1/meta/sources"
 
 # Get news with filters
-curl "https://api.freenews.site/api/v1/news?source=reuters&pageSize=5" \
+curl "https://freenews.site/api/v1/news?source=reuters&pageSize=5" \
   -H "X-API-Key: YOUR_API_KEY"
 
 # Search articles
-curl "https://api.freenews.site/api/v1/search?keyword=bitcoin&sentiment=positive" \
+curl "https://freenews.site/api/v1/search?keyword=bitcoin&sentiment=positive" \
   -H "X-API-Key: YOUR_API_KEY"
 
 # Check quota
-curl "https://api.freenews.site/api/v1/account/quota" \
+curl "https://freenews.site/api/v1/account/quota" \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
@@ -696,7 +698,7 @@ curl "https://api.freenews.site/api/v1/account/quota" \
 - **Website:** [freenews.site](https://freenews.site)
 - **Register:** [freenews.site/register](https://freenews.site/register)
 - **Dashboard & Playground:** [freenews.site/dashboard](https://freenews.site/dashboard)
-- **Interactive API Docs:** [api.freenews.site/doc.html](https://api.freenews.site/doc.html)
+- **Interactive API Docs:** [freenews.site/doc.html](https://freenews.site/doc.html)
 
 ---
 
